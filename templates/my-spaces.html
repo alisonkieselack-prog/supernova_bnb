@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+        <link rel="stylesheet" href="/static/style.css" >
+            {% include "components/import_stylesheets.html" %}
+
+    </head>
+    <body>
+        {% from 'components/space_card.html' import space_card %}
+        {% include "components/nav.html" %}
+        <div class="container">
+            <div class="actions">
+                <a href="/my_spaces/add" class="btn btn-primary">Add a Space</a>
+                <a href="/my_spaces/requests" class="btn btn-outline">View Space Requests</a>
+            </div>
+        <h2>Spaces</h2>
+        <div class="card-list">
+        {% for space in spaces %}
+            {{space_card(space)}}
+        {% endfor %}
+            <a href="/my_spaces/add" class="card add-card">
+                <article class="card-list">
+                    <figcaption>
+                        <p class="add-card-button">
+                            +
+                        </p>
+                    </figcaption>
+                </article>
+            </a>
+
+            </div>
+        </div>
+        {% include "components/footer.html" %}
+    </body>
+</html>

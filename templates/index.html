@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>SupernovaBnB</title>
+    {% include "components/import_stylesheets.html" %}
+
+ </head>
+
+<body>
+    {% from 'components/space_card.html' import space_card %}
+    {% include "components/nav.html" %}
+    <section class="container">
+        {% if session.get('name') %}
+        <h1>Welcome {{ session['name'].split()[0] }}</h1>
+        {% else %}
+        <h1>Welcome Guest</h1>
+        <p>One galaxy, endless destinations. Start exploring and find your next out-of-this-world stay!</p>
+
+        {% endif %}
+        <section class="card-list">
+            {% for space in spaces %}
+            {{space_card(space)}}
+            {% endfor %}
+        </section>
+    </section>
+    {% include "components/footer.html" %}
+</body>
+
+</html>

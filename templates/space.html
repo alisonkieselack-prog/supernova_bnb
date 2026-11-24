@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supernova - Reserve your space</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    {% include "components/import_stylesheets.html" %}
+</head>
+
+<body>
+    {% include 'components/nav.html' %}
+
+    <main>
+        <div class="container space-detail-container">
+            <section class="space-details" id="space-left-container">
+                <img src="/{{ space.image_url }}" alt="{{ space.name }}">
+            </section>
+
+            <section class="space-details" id="space-right-container">
+                <h1>{{ space.name }}</h1>
+                <p> {{space.description }}</p>
+                {% if is_owner %}
+                    <h2>Your space</h2>
+                    <h3>£{{ space.price_per_night }} <small>/ night</small></h3>
+                    <p class="owner-note">This is your space, so you cannot book it.</p>
+                    <a href="{{space.id}}/edit" class="btn btn-outline">Edit Space Details</a>
+                {% else %}
+                    
+                    <form class="form" method="POST" action="/spaces/{{ space.id }}" novalidate>
+
+                        <h2>Reserve your space</h2>
+                        <h3>£{{ space.price_per_night }} <small>/ night</small></h3>
+
+                        <div class="form-group">
+                            <label for="booking_date">Select date:</label>
+                            <input type="date" id="booking_date" name="booking_date"
+                                min="{{ today.strftime('%Y-%m-%d') if today.strftime('%Y-%m-%d') > space.availability_start_date.strftime('%Y-%m-%d') else space.availability_start_date.strftime('%Y-%m-%d') }}"
+                                max="{{ space.availability_end_date.strftime('%Y-%m-%d') }}" required>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Request booking</button>
+                    </form>
+                {% endif %}
+
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </section>
+        </div>
+    </main>
+
+    {% include "components/footer.html" %}
+</body>
+
+</html>
